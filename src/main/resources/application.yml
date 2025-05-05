@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: jdbc:mariadb://localhost:3306/collector_bot
+    username: collector_bot
+    password: collector_bot
+
+bots:
+  collector:
+    token: ${COLLECTOR_BOT_TOKEN}
+    name: ${COLLECTOR_BOT_NAME}
