@@ -20,6 +20,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
@@ -73,6 +74,7 @@ public class RenameCommandHandler implements CommandHandler, StateHandler {
 
         final CollectionItemEntity item = getItem(update);
         item.setName(newName);
+        item.setUpdatedAt(Instant.now());
 
         itemsRepository.save(item);
         userService.setState(update, ChatState.STARTED);
@@ -114,6 +116,7 @@ public class RenameCommandHandler implements CommandHandler, StateHandler {
 
         final CollectionEntity collection = getCollection(update);
         collection.setName(newName);
+        collection.setUpdatedAt(Instant.now());
 
         collectionRepository.save(collection);
         userService.setState(update, ChatState.STARTED);

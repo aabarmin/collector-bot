@@ -10,8 +10,8 @@ import dev.abarmin.telegram.collector.handler.command.item.ListItemsCallbackHand
 import dev.abarmin.telegram.collector.handler.command.item.ViewItemCallbackHandler;
 import dev.abarmin.telegram.collector.handler.helper.UpdateHelper;
 import dev.abarmin.telegram.collector.service.ChatState;
-import dev.abarmin.telegram.collector.repository.CollectionItemsRepository;
-import dev.abarmin.telegram.collector.repository.CollectionRepository;
+import dev.abarmin.telegram.collector.service.CollectionItemService;
+import dev.abarmin.telegram.collector.service.CollectionService;
 import dev.abarmin.telegram.collector.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -39,8 +39,8 @@ public class DeleteCommandHandler implements CommandHandler, StateHandler {
 
     private final TelegramClient telegramClient;
     private final UserService userService;
-    private final CollectionItemsRepository itemsRepository;
-    private final CollectionRepository collectionRepository;
+    private final CollectionItemService collectionItemService;
+    private final CollectionService collectionService;
     private final ListCommandHandler listCollectionsHandler;
     private final ListItemsCallbackHandler listHandler;
     private final ViewItemCallbackHandler itemHandler;
@@ -102,11 +102,11 @@ public class DeleteCommandHandler implements CommandHandler, StateHandler {
         userService.setState(update, ChatState.STARTED);
 
         if (StringUtils.endsWith(text, YES)) {
-            itemsRepository.delete(item);
+            collectionItemService.markDeleted(item);
 
             wrap(() -> telegramClient.execute(SendMessage.builder()
                     .chatId(UpdateHelper.getChatId(update))
-                    .text("Элемент удален из коллекци")
+                    .text("Элемент помещен в корзину")
                     .build()));
 
             listHandler.showCollectionContent(update, collection);
@@ -126,12 +126,11 @@ public class DeleteCommandHandler implements CommandHandler, StateHandler {
         userService.setState(update, ChatState.STARTED);
 
         if (StringUtils.endsWith(text, YES)) {
-            // todo, should delete collection items too
-            collectionRepository.delete(collection);
+            collectionService.markDeleted(collection);
 
             wrap(() -> telegramClient.execute(SendMessage.builder()
                     .chatId(UpdateHelper.getChatId(update))
-                    .text("Коллекция удалена")
+                    .text("Коллекция помещена в корзину")
                     .build()));
 
             listCollectionsHandler.handle(update);
@@ -147,13 +146,13 @@ public class DeleteCommandHandler implements CommandHandler, StateHandler {
 
     private CollectionEntity getCollection(Update update) {
         final CurrentItemContext context = userService.getContext(update, CurrentItemContext.class);
-        return collectionRepository.findById(context.getCollectionId())
+        return collectionService.findById(context.getCollectionId())
                 .orElseThrow(() -> new IllegalArgumentException("Collection not found"));
     }
 
     private CollectionItemEntity getItem(Update update) {
         final CurrentItemContext context = userService.getContext(update, CurrentItemContext.class);
-        return itemsRepository.findById(context.getItemId())
+        return collectionItemService.findById(context.getItemId())
                 .orElseThrow(() -> new IllegalArgumentException("Item not found"));
     }
 

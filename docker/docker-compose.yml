@@ -8,9 +8,9 @@ services:
       - 3306:3306
     environment:
       - MARIADB_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=bot
-      - MYSQL_USER=bot
-      - MYSQL_PASSWORD=bot
+      - MYSQL_DATABASE=collector_bot
+      - MYSQL_USER=collector_bot
+      - MYSQL_PASSWORD=collector_bot
 
   phpmyadmin:
     image: phpmyadmin

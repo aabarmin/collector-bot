@@ -6,7 +6,7 @@ import dev.abarmin.telegram.collector.domain.UserEntity;
 import dev.abarmin.telegram.collector.handler.helper.UpdateHelper;
 import dev.abarmin.telegram.collector.service.ChatState;
 import dev.abarmin.telegram.collector.repository.CollectionRepository;
-import dev.abarmin.telegram.collector.service.ItemService;
+import dev.abarmin.telegram.collector.service.CollectionItemService;
 import dev.abarmin.telegram.collector.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +32,7 @@ public class SearchCommandHandler implements CommandHandler, StateHandler {
 
     private final TelegramClient telegramClient;
     private final UserService userService;
-    private final ItemService itemService;
+    private final CollectionItemService collectionItemService;
     private final CollectionRepository collectionRepository;
 
     @Override
@@ -73,7 +73,7 @@ public class SearchCommandHandler implements CommandHandler, StateHandler {
 
         userService.setState(update, ChatState.STARTED);
         final UserEntity user = userService.getUser(update);
-        final Collection<CollectionItemEntity> items = itemService.searchByKeyword(user, query);
+        final Collection<CollectionItemEntity> items = collectionItemService.searchByKeyword(user, query);
 
         final StringBuilder builder = new StringBuilder();
         if (items.isEmpty()) {

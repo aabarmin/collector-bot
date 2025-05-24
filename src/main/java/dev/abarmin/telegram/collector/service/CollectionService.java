@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -20,6 +21,15 @@ public class CollectionService {
 
     private final CollectionRepository collectionRepository;
     private final CollectionAccessRepository accessRepository;
+
+    public CollectionEntity markDeleted(@NonNull CollectionEntity collection) {
+        collection.setDeleted(true);
+        return collectionRepository.save(collection);
+    }
+
+    public Optional<CollectionEntity> findById(int id) {
+        return collectionRepository.findById(id);
+    }
 
     public List<CollectionEntity> getAvailableCollections(@NonNull UserEntity user) {
         final Collection<CollectionEntity> collections = new HashSet<>();
