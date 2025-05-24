@@ -23,7 +23,7 @@ public class TelegramAppConfiguration {
         return new OkHttpTelegramClient(getCollectorBotToken());
     }
 
-    @Bean
+    @Bean(destroyMethod = "close")
     public TelegramBotsLongPollingApplication longPollingApplication(CollectorBot bot) throws TelegramApiException {
         final TelegramBotsLongPollingApplication app = new TelegramBotsLongPollingApplication();
         app.registerBot(getCollectorBotToken(), bot);

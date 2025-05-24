@@ -86,6 +86,13 @@ public class StartCommandHandler implements CommandHandler {
                         owner.getUsername(),
                         collection.getName()
                 );
+
+                wrap(() -> telegramClient.execute(SendMessage.builder()
+                        .chatId(owner.getChatId())
+                        .text("Пользователь %s получил доступ к вашей коллекции %s по приглашению".formatted(
+                                currentUser.getUsername(),
+                                collection.getName()))
+                        .build()));
             }
         }
 
