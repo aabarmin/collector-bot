@@ -37,8 +37,6 @@ jobs:
 
     - name: Build with Gradle Wrapper
       run: ./gradlew build
-      env:
-        DATABASE_HOST: db
 
     - name: "Store test results"
       uses: actions/upload-artifact@v4
