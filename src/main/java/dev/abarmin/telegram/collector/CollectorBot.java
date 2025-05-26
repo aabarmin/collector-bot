@@ -11,18 +11,18 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.util.Optional;
+import java.util.function.Consumer;
 
 import static dev.abarmin.telegram.collector.handler.command.StartCommandHandler.START_COMMAND;
 
 @Component
 @RequiredArgsConstructor
-public class CollectorBot implements LongPollingSingleThreadUpdateConsumer {
+public class CollectorBot implements Consumer<Update> {
 
     private final CommandHandlerRegistry commandRegistry;
     private final CallbackHandlerRegistry callbackRegistry;
@@ -31,7 +31,7 @@ public class CollectorBot implements LongPollingSingleThreadUpdateConsumer {
     private final UserService userService;
 
     @Override
-    public void consume(Update update) {
+    public void accept(Update update) {
         if (hasText(update) || hasPhoto(update)) {
             final ChatState state = userService.getState(update);
             final Optional<StateHandler> stateHandler = stateRegistry.getHandler(state);

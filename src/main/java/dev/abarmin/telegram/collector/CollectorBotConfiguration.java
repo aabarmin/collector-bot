@@ -34,5 +34,14 @@ public class CollectorBotConfiguration {
         @NotEmpty
         private String name;
 
+        @NotNull
+        private GetUpdatesStrategy getUpdatesStrategy = GetUpdatesStrategy.LONG_POLLING;
+
+    }
+
+    enum GetUpdatesStrategy {
+        NONE,
+        LONG_POLLING,
+        WEBHOOK
     }
 }

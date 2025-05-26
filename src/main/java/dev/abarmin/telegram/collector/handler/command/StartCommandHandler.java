@@ -34,6 +34,8 @@ public class StartCommandHandler implements CommandHandler {
     public static final String BOT_MENU_COMMAND = "⬅️ В меню бота";
     public static final String START_COMMAND = "/start";
 
+    public static final String MANAGE_ACCESS_COMMAND = "\uD83D\uDC65 Управление доступом";
+
     private final TelegramClient telegramClient;
     private final UserService userService;
     private final CollectionShareCodeRepository codeRepository;
@@ -60,7 +62,7 @@ public class StartCommandHandler implements CommandHandler {
                 .replyMarkup(ReplyKeyboardMarkup.builder()
                         .resizeKeyboard(true)
                         .keyboardRow(keyboardRow(MANAGE_COLLECTIONS))
-                        .keyboardRow(keyboardRow("\uD83D\uDC65 Управление доступом"))
+                        .keyboardRow(keyboardRow(MANAGE_ACCESS_COMMAND))
                         .build())
                 .build()));
     }

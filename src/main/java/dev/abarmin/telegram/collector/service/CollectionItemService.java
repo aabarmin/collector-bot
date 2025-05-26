@@ -20,9 +20,9 @@ public class CollectionItemService {
 
     private static final String SEARCH_QUERY = """
             select ci.*
-            from "COLLECTION_ITEMS" as ci
-            inner join "COLLECTIONS" c on c."ID" = ci."COLLECTION_ID"
-            where c."USER_ID" = :userId and LOWER(ci."NAME") like :keyword
+            from COLLECTION_ITEMS as ci
+            inner join COLLECTIONS c on c.ID = ci.COLLECTION_ID
+            where c.USER_ID = :userId and LOWER(ci.NAME) like :keyword
             """;
 
     private final JdbcClient jdbcClient;
