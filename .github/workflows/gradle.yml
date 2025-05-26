@@ -40,6 +40,14 @@ jobs:
       env:
         DATABASE_HOST: db
 
+    - name: "Store test results"
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: "Test Reports"
+        path: build/reports
+        retention-days: 7
+
   dependency-submission:
 
     runs-on: ubuntu-latest
